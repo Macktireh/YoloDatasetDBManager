@@ -1,0 +1,90 @@
+[project]
+name = "YoloDatasetDBManager"
+dynamic = ["version"]
+description = "A Python library for managing YOLO datasets, allowing seamless conversion between filesystem-based datasets and PostgreSQL storage. Features include inserting datasets into a database, retrieving and rebuilding datasets, and preserving YOLO-compliant folder structures."
+authors = [{ name = "Macktireh", email = "abdimack97@gmail.com" }]
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = [
+    "psycopg[binary]>=3.2.3",
+    "pydantic>=2.9.2",
+    "python-dotenv>=1.0.1",
+]
+
+[dependency-groups]
+lint = [
+    "ruff>=0.7.4",
+    "pre-commit>=4.0.1",
+]
+test = [
+    "pytest>=8.3.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/Macktireh/YoloDatasetDBManager"
+Documentation = "https://github.com/Macktireh/YoloDatasetDBManager#readme"
+Repository = "https://github.com/Macktireh/YoloDatasetDBManager"
+Issues = "https://github.com/Macktireh/YoloDatasetDBManager/issues"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.scripts]
+rufffix = "ruff check --fix"
+precommit = "pre-commit run --all-files"
+test = "pytest"
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pytest.ini_options]
+python_files = "test*.py"  # to discover testA.py and testB.py
+pythonpath = "src"
+
+[tool.ruff]
+line-length = 110
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
