@@ -4,9 +4,9 @@
 
 ## 📥 Installation
 
-#### Via `pip`
+Ensure Python 3.11+ is installed.
 
-Ensure Python 3.12+ is installed, then run:
+#### Via `pip`
 
 ```bash
 pip install YoloDatasetDBManager
@@ -32,26 +32,35 @@ from yolo_dataset_db_manager.db import PostgreSQLManager
 from yolo_dataset_db_manager.processor import YoloDatasetProcessor
 from yolo_dataset_db_manager.settings import ParamsConnection
 
-if __name__ == "__main__":
-    params = ParamsConnection(
-        dbname=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        host=os.getenv("POSTGRES_HOST"),
-        port=os.getenv("POSTGRES_PORT"),
-    )
-    base_directory = Path(__file__).parent.parent
-    dataset_path = base_directory / "data"
-    output_path = base_directory / "datasets_out"
+BASE_DIR = Path(__file__).parent.parent
 
-    # Initialize the database manager and process datasets
-    with PostgreSQLManager(params, table_name="yolo_dataset", create_table=True) as db:
-        process = YoloDatasetProcessor(
-            db, dataset_path=dataset_path, output_path=output_path
-        )
-        process.save_dataset()
-        process.rebuild_dataset()
-        dataset = db.fetch_dataset()
+# dataset paths
+dataset_path = BASE_DIR / "data"
+
+# output path
+output_path = BASE_DIR / "datasets_out"
+
+# Initialize database connection parameters
+params = ParamsConnection(
+    dbname=os.getenv("POSTGRES_DB"),
+    user=os.getenv("POSTGRES_USER"),
+    password=os.getenv("POSTGRES_PASSWORD"),
+    host=os.getenv("POSTGRES_HOST"),
+    port=os.getenv("POSTGRES_PORT"),
+)
+
+# Initialize the database manager and process datasets
+with PostgreSQLManager(params, table_name="yolo_dataset", create_table=True) as db:
+    process = YoloDatasetProcessor(
+        db, dataset_path=dataset_path, output_path=output_path
+    )
+
+    # Process and save datasets to the database and commit changes
+    process.save_dataset()
+    db.commit()
+
+    # Rebuild dataset folders from the database
+    process.rebuild_dataset()
 ```
 
 ## 🛠️ Contribution
@@ -61,20 +70,22 @@ Contributions are welcome! Follow these steps to get involved:
 1. Fork the project on GitHub.
 2. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/YoloDatasetDBManager.git
+   git clone https://github.com/Macktireh/YoloDatasetDBManager.git
    ```
 3. Install development dependencies with `pdm`:
    ```bash
-   pdm install -d
+   pdm install
    ```
 4. Create a branch for your changes:
    ```bash
    git checkout -b feature/my-feature
    ```
-5. Submit a pull request when your work is ready.
+5. Run tests:
+   ```bash
+   pdm run test
+   ```
+6. Submit a pull request when your work is ready.
 
 ## 📜 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
-Feel free to customize the GitHub link or content as needed! 😊
