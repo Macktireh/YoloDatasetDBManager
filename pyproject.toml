@@ -3,9 +3,21 @@ name = "YoloDatasetDBManager"
 dynamic = ["version"]
 description = "A Python library for managing YOLO datasets, allowing seamless conversion between filesystem-based datasets and PostgreSQL storage. Features include inserting datasets into a database, retrieving and rebuilding datasets, and preserving YOLO-compliant folder structures."
 authors = [{ name = "Macktireh", email = "abdimack97@gmail.com" }]
-requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",
+    "Topic :: Software Development :: Libraries"
+]
+requires-python = ">=3.11"
 dependencies = [
     "psycopg[binary]>=3.2.3",
     "pydantic>=2.9.2",
