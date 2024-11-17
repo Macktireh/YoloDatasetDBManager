@@ -49,7 +49,7 @@ class YoloDatasetProcessor:
         """Saves dataset records into the database."""
         supported_extensions = [".jpg", ".jpeg", ".png"]
         with progress_bar as p:
-            for folder in p.track(self.folders, description="Scanning folders"):
+            for folder in p.track(self.folders, description="Saving dataset..."):
                 image_folder = self.dataset_path / folder / "images"
                 label_folder = self.dataset_path / folder / "labels"
 
@@ -58,7 +58,7 @@ class YoloDatasetProcessor:
                         continue
 
                     if image_path.suffix.lower() not in supported_extensions:
-                        logging.warning(f"Fichier ignoré : {image_path.name} (extension non prise en charge)")
+                        logging.warning(f"File ignored: {image_path.name} (extension not supported)")
                         continue
                     try:
                         with open(image_path, "rb") as image_file:
@@ -66,7 +66,7 @@ class YoloDatasetProcessor:
 
                         label_path = label_folder / f"{image_path.stem}.txt"
                         if not label_path.exists():
-                            logging.warning(f"Label introuvable pour {image_path.name}")
+                            logging.warning(f"Label file not found: {label_path.name}")
                             continue
 
                         with open(label_path) as label_file:
@@ -81,7 +81,8 @@ class YoloDatasetProcessor:
                         )
                         self.db_manager.insert_dataset(query=query, params=query_params)
                     except Exception as e:
-                        logging.error(f"Erreur lors du traitement de {image_path.name}: {e}")
+                        logging.error(f"Error processing file: {image_path.name}")
+                        logging.error(e)
 
     def rebuild_dataset(self, query: str | None = None) -> None:
         """Rebuilds the YOLO dataset folder structure from the database."""

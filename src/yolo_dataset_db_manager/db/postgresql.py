@@ -1,10 +1,15 @@
+import logging
 from typing import Self
 
 from psycopg import connect as postgres_connect
 from psycopg.abc import Params
+from rich.logging import RichHandler
 
 from yolo_dataset_db_manager.db.abstract import AbstractDatabaseManager
 from yolo_dataset_db_manager.settings import ParamsConnection
+
+FORMAT = "%(message)s"
+logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
 
 FetchRow = tuple[str, bytes, str, str, str]
 QueryParams = FetchRow | Params
