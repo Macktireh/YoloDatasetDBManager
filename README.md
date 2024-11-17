@@ -32,15 +32,16 @@ from yolo_dataset_db_manager.db import PostgreSQLManager
 from yolo_dataset_db_manager.processor import YoloDatasetProcessor
 from yolo_dataset_db_manager.settings import ParamsConnection
 
+# Define the base directory for the project
 BASE_DIR = Path(__file__).parent.parent
 
-# dataset paths
+# Specify the path to the dataset folder, where the YOLO data is stored
 dataset_path = BASE_DIR / "data"
 
-# output path
+# Specify the output directory where the reconstructed dataset will be saved
 output_path = BASE_DIR / "datasets_out"
 
-# Initialize database connection parameters
+# Configure the connection parameters for the PostgreSQL database
 params = ParamsConnection(
     dbname=os.getenv("POSTGRES_DB"),
     user=os.getenv("POSTGRES_USER"),
@@ -49,17 +50,17 @@ params = ParamsConnection(
     port=os.getenv("POSTGRES_PORT"),
 )
 
-# Initialize the database manager and process datasets
+# Initialize the PostgreSQL manager and create the YOLO dataset table if it doesn't exist
 with PostgreSQLManager(params, table_name="yolo_dataset", create_table=True) as db:
     process = YoloDatasetProcessor(
         db, dataset_path=dataset_path, output_path=output_path
     )
 
-    # Process and save datasets to the database and commit changes
+    # Save the dataset (images and annotations) from the local folder to the database
     process.save_dataset()
-    db.commit()
+    db.commit()  # Commit the transaction to ensure data is stored in the database
 
-    # Rebuild dataset folders from the database
+    # Rebuild the dataset structure from the database into the output folder
     process.rebuild_dataset()
 ```
 
