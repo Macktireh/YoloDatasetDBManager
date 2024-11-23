@@ -1,4 +1,7 @@
+![PyPI - Downloads](https://img.shields.io/pypi/dm/YoloDatasetDBManager?color=blue&style=flat-square)
+
 # YoloDatasetDBManager
+
 
 **YoloDatasetDBManager** is a Python library designed to efficiently manage YOLO datasets stored in a PostgreSQL database. It enables saving images and their associated annotations, rebuilding folder structures from the database, and performing flexible operations on datasets.
 
